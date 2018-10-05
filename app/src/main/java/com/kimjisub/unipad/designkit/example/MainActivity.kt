@@ -40,9 +40,9 @@ class MainActivity : AppCompatActivity() {
 
 				override fun onFunctionBtnClick(v: PackView, index: Int) {
 					when (index) {
-						0 -> showToast("onFunctionBtnClick(0) on first exmaple")
-						1 -> showToast("onFunctionBtnClick(1) on first exmaple")
-						2 -> showToast("onFunctionBtnClick(2) on first exmaple")
+						0 -> showToast("onFunctionBtnClick(0) on first example")
+						1 -> showToast("onFunctionBtnClick(1) on first example")
+						2 -> showToast("onFunctionBtnClick(2) on first example")
 					}
 				}
 			})
