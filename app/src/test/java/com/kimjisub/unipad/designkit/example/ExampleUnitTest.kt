@@ -1,4 +1,4 @@
-package com.kimjisub.unipad.designkit
+package com.kimjisub.unipad.designkit.example
 
 import org.junit.Test
 

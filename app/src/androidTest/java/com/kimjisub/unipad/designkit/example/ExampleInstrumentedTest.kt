@@ -1,4 +1,4 @@
-package com.kimjisub.unipad.designkit
+package com.kimjisub.unipad.designkit.example
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
 	fun useAppContext() {
 		// Context of the app under test.
 		val appContext = InstrumentationRegistry.getTargetContext()
-		assertEquals("com.kimjisub.unipad.designkit", appContext.packageName)
+		assertEquals("com.kimjisub.unipad.designkit.example", appContext.packageName)
 	}
 }
