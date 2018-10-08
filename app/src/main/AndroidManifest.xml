@@ -3,6 +3,12 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.kimjisub.unipad.designkit.example">
 	
+	<uses-permission android:name="android.permission.STORAGE"/>
+	<uses-permission android:name="android.permission.PERMISSIONS_STORAGE"/>
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.REQUEST_EXTERNAL_STORAGE"/>
+	
 	<application
 	    android:allowBackup="true"
 	    android:icon="@mipmap/ic_launcher"
