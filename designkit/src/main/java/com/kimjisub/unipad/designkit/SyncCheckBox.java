@@ -134,7 +134,6 @@ public class SyncCheckBox {
 	
 	// ========================================================================================= getter
 	
-	
 	public boolean isChecked() {
 		return isChecked;
 	}
