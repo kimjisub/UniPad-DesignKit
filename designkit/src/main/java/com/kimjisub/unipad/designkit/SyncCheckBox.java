@@ -123,7 +123,7 @@ public class SyncCheckBox {
 	}
 	
 	public void forceToggleChecked() {
-		forceSetChecked(!isChecked());
+		forceSetChecked(!isChecked);
 	}
 	
 	public void setLocked(boolean b) {
@@ -132,9 +132,14 @@ public class SyncCheckBox {
 			checkBox.setEnabled(!b);
 	}
 	
+	// ========================================================================================= getter
+	
+	
 	public boolean isChecked() {
-		for (CheckBox checkBox : checkBoxes)
-			return checkBox.isChecked();
-		return false;
+		return isChecked;
+	}
+	
+	public boolean isLocked() {
+		return isLocked;
 	}
 }
