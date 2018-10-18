@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 public class SyncCheckBox {
 	
+	private boolean isChecked = false;
+	private boolean isLocked = false;
 	
 	// =========================================================================================
 	
@@ -17,7 +19,7 @@ public class SyncCheckBox {
 	}
 	
 	public void addCheckBox(CheckBox checkBox) {
-		checkBox.setOnCheckedChangeListener((compoundButton, b) -> changeChecked(b));
+		checkBox.setOnCheckedChangeListener((compoundButton, b) -> setChecked(b));
 		checkBox.setOnLongClickListener(view -> {
 			longClick();
 			return false;
@@ -26,6 +28,37 @@ public class SyncCheckBox {
 		checkBoxes.add(checkBox);
 	}
 	
+	
+	// ========================================================================================= setChecked
+	
+	
+	public void setChecked(boolean b) {
+		if (!isLocked)
+			forceSetChecked(b);
+		else {
+			for (CheckBox checkBox : checkBoxes) {
+				if (checkBox.isChecked() != isChecked) {
+					checkBox.setOnCheckedChangeListener(null);
+					checkBox.setChecked(isChecked);
+					checkBox.setOnCheckedChangeListener((compoundButton, b2) -> setChecked(b2));
+				}
+			}
+		}
+	}
+	
+	public void forceSetChecked(boolean b) {
+		isChecked = b;
+		
+		for (CheckBox checkBox : checkBoxes) {
+			if (checkBox.isChecked() != b) {
+				checkBox.setOnCheckedChangeListener(null);
+				checkBox.setChecked(b);
+				checkBox.setOnCheckedChangeListener((compoundButton, b2) -> setChecked(b2));
+			}
+		}
+		
+		onCheckedChange(b);
+	}
 	// ========================================================================================= checkedChange
 	
 	OnCheckedChange onCheckedChange;
@@ -41,18 +74,6 @@ public class SyncCheckBox {
 	public void onCheckedChange(boolean bool) {
 		if (onCheckedChange != null)
 			onCheckedChange.onCheckedChange(bool);
-	}
-	
-	public void changeChecked(boolean bool) {
-		for (CheckBox checkBox : checkBoxes) {
-			if (checkBox.isChecked() != bool) {
-				checkBox.setOnCheckedChangeListener(null);
-				checkBox.setChecked(bool);
-				checkBox.setOnCheckedChangeListener((compoundButton, b) -> changeChecked(b));
-			}
-		}
-		
-		onCheckedChange(bool);
 	}
 	
 	// ========================================================================================= longClick
@@ -77,7 +98,7 @@ public class SyncCheckBox {
 	}
 	
 	
-	// =========================================================================================
+	// ========================================================================================= etc...
 	
 	/*public void setTextColor(int color) {
 		for (CheckBox checkBox : checkBoxes)
@@ -96,9 +117,19 @@ public class SyncCheckBox {
 			checkBox.setVisibility(visibility);
 	}
 	
-	public void setChecked(boolean b) {
+	public void toggleChecked() {
+		if (!isLocked)
+			forceToggleChecked();
+	}
+	
+	public void forceToggleChecked() {
+		forceSetChecked(!isChecked());
+	}
+	
+	public void setLocked(boolean b) {
+		isLocked = b;
 		for (CheckBox checkBox : checkBoxes)
-			checkBox.setChecked(b);
+			checkBox.setEnabled(!b);
 	}
 	
 	public boolean isChecked() {

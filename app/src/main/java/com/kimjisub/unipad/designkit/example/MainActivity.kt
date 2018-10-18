@@ -11,6 +11,7 @@ import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.kimjisub.unipad.designkit.FileExplorer
 import com.kimjisub.unipad.designkit.PackView
+import com.kimjisub.unipad.designkit.SyncCheckBox
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -21,6 +22,7 @@ class MainActivity : AppCompatActivity() {
 
 		firstExample()
 		explorer()
+		syncCheckBox()
 	}
 
 	private fun firstExample(){
@@ -101,6 +103,15 @@ class MainActivity : AppCompatActivity() {
 				.setPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 				.check()
 		}
+	}
+
+	private fun syncCheckBox(){
+		var syncCheckBox = SyncCheckBox()
+		syncCheckBox.addCheckBox(CB_syncCheckBox1)
+		syncCheckBox.addCheckBox(CB_syncCheckBox2)
+		BTN_syncToggleButton1.setOnClickListener { syncCheckBox.toggleChecked() }
+
+		CB_lock.setOnCheckedChangeListener { compoundButton, b -> run { syncCheckBox.setLocked(b) } }
 	}
 
 	fun showToast(msg: String) {
