@@ -109,6 +109,7 @@ class MainActivity : AppCompatActivity() {
 		var syncCheckBox = SyncCheckBox()
 		syncCheckBox.addCheckBox(CB_syncCheckBox1)
 		syncCheckBox.addCheckBox(CB_syncCheckBox2)
+		syncCheckBox.addCheckBox(CB_syncCheckBox3)
 		BTN_syncToggleButton1.setOnClickListener { syncCheckBox.toggleChecked() }
 
 		CB_lock.setOnCheckedChangeListener { compoundButton, b -> run { syncCheckBox.setLocked(b) } }

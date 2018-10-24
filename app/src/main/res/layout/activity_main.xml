@@ -34,6 +34,12 @@
 			    android:layout_height="wrap_content"
 			    android:text="Sync CheckBox 2"/>
 			
+			<CheckBox
+			    android:id="@+id/CB_syncCheckBox3"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:text="Sync CheckBox 3"/>
+			
 			<Button
 			    android:id="@+id/BTN_syncToggleButton1"
 			    android:layout_width="wrap_content"
