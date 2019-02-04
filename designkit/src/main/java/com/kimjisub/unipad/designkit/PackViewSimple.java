@@ -38,8 +38,6 @@ public class PackViewSimple extends RelativeLayout {
 	TextView TV_option1;
 	TextView TV_option2;
 
-	boolean status = false;
-
 	int PX_flag_default;
 	int PX_flag_enable;
 	int PX_info_default;
@@ -157,16 +155,6 @@ public class PackViewSimple extends RelativeLayout {
 		typedArray.recycle();
 	}
 	//========================================================================================= set / update / etc..
-
-	public PackViewSimple setStatus(boolean bool) {
-		status = bool;
-
-		return this;
-	}
-
-	public boolean getStatus() {
-		return status;
-	}
 
 	public PackViewSimple setFlagColor(int color) {
 		GradientDrawable flagBackground = (GradientDrawable) getResources().getDrawable(R.drawable.border_all_round);
