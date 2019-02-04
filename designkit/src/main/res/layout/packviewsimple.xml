@@ -6,13 +6,8 @@
 	android:gravity="center">
 
 	<RelativeLayout
-		android:id="@+id/touchView"
-		android:layout_width="match_parent"
-		android:layout_height="60dp"
-		android:layout_alignParentStart="true"
-		android:layout_alignParentLeft="true"
-		android:layout_alignParentTop="true"
-		android:clickable="true">
+		android:layout_width="150dp"
+		android:layout_height="60dp">
 
 		<RelativeLayout
 			android:id="@+id/flag"
@@ -43,24 +38,43 @@
 			android:textSize="10dp" />
 
 		<RelativeLayout
-			android:layout_width="match_parent"
+			android:id="@+id/playBtn"
+			android:layout_width="100dp"
 			android:layout_height="match_parent"
 			android:layout_alignParentStart="true"
-			android:layout_alignParentLeft="true"
-			android:layout_alignParentTop="true">
+			android:layout_alignParentLeft="true" />
 
+	</RelativeLayout>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="60dp"
+		android:layout_alignParentStart="true"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentTop="true"
+		android:orientation="horizontal">
+
+		<RelativeLayout
+			android:id="@+id/flagSize"
+			android:layout_width="10dp"
+			android:layout_height="match_parent" />
+
+		<LinearLayout
+			android:id="@+id/touchView"
+			android:layout_width="match_parent"
+			android:orientation="horizontal"
+			android:clickable="true"
+			android:layout_height="match_parent">
 
 			<LinearLayout
 				android:id="@+id/leftView"
-				android:layout_width="wrap_content"
+				android:layout_width="0dp"
 				android:layout_height="match_parent"
-				android:layout_alignParentStart="true"
-				android:layout_alignParentLeft="true"
-				android:layout_toLeftOf="@+id/rightView"
+				android:layout_weight="1"
 				android:background="@drawable/border_no_round">
 
 				<LinearLayout
-					android:layout_width="wrap_content"
+					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center"
 					android:layout_marginLeft="15dp"
@@ -92,20 +106,14 @@
 
 			<RelativeLayout
 				android:id="@+id/rightView"
-				android:layout_width="150dp"
+				android:layout_width="wrap_content"
 				android:layout_height="match_parent"
-				android:layout_alignParentTop="true"
-				android:layout_alignParentEnd="true"
-				android:layout_alignParentRight="true"
-				android:background="@drawable/border_right_round">
+				android:background="@drawable/border_right_round"
+				android:gravity="center">
 
 				<LinearLayout
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_alignParentEnd="true"
-					android:layout_alignParentRight="true"
-					android:layout_centerVertical="true"
-					android:layout_gravity="center|right"
 					android:orientation="vertical"
 					android:paddingRight="15dp">
 
@@ -116,6 +124,7 @@
 						android:layout_gravity="end"
 						android:ellipsize="end"
 						android:maxLines="1"
+						android:text="test"
 						android:textColor="@color/pink"
 						android:textSize="10dp" />
 
@@ -127,20 +136,15 @@
 						android:layout_marginTop="1dp"
 						android:ellipsize="end"
 						android:maxLines="1"
+						android:text="test"
 						android:textColor="@color/pink"
 						android:textSize="10dp" />
 
 				</LinearLayout>
 			</RelativeLayout>
 
+		</LinearLayout>
 
-			<RelativeLayout
-				android:id="@+id/playBtn"
-				android:layout_width="100dp"
-				android:layout_height="match_parent"
-				android:layout_alignParentStart="true"
-				android:layout_alignParentLeft="true" />
 
-		</RelativeLayout>
-	</RelativeLayout>
+	</LinearLayout>
 </RelativeLayout>

@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
 	private void packViewSimple() {
 		PackViewSimple packViewSimple = new PackViewSimple(MainActivity.this)
 				.setFlagColor(getResources().getColor(R.color.red))
-				.setTitle("this is title")
+				.setTitle("this is title this is title this is title this is title this is title this is title")
 				.setSubTitle("this is subtitle")
 				.setOption1("option1", true)
 				.setOption2("option2", false)

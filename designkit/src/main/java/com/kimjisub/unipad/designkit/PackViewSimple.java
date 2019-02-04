@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.Transformation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,13 +24,14 @@ public class PackViewSimple extends RelativeLayout {
 	Context context;
 
 	RelativeLayout RL_root;
-	RelativeLayout RL_touchView;
+	LinearLayout LL_touchView;
 	LinearLayout LL_leftView;
 	RelativeLayout RL_playBtn;
 	ImageView IV_playImg;
 	TextView TV_playText;
 
 	RelativeLayout RL_flag;
+	RelativeLayout RL_flagSize;
 	int RL_flag_color;
 	TextView TV_title;
 	TextView TV_subTitle;
@@ -40,9 +40,6 @@ public class PackViewSimple extends RelativeLayout {
 
 	int PX_flag_default;
 	int PX_flag_enable;
-	int PX_info_default;
-	int PX_info_enable;
-	int PX_info_extend;
 
 	private void initView(Context context) {
 		this.context = context;
@@ -55,13 +52,14 @@ public class PackViewSimple extends RelativeLayout {
 
 		// set view
 		RL_root = findViewById(R.id.root);
-		RL_touchView = findViewById(R.id.touchView);
+		LL_touchView = findViewById(R.id.touchView);
 		LL_leftView = findViewById(R.id.leftView);
 		RL_playBtn = findViewById(R.id.playBtn);
 		IV_playImg = findViewById(R.id.playImg);
 		TV_playText = findViewById(R.id.playText);
 
 		RL_flag = findViewById(R.id.flag);
+		RL_flagSize = findViewById(R.id.flagSize);
 		TV_title = findViewById(R.id.title);
 		TV_subTitle = findViewById(R.id.subTitle);
 		TV_option1 = findViewById(R.id.option1);
@@ -70,18 +68,10 @@ public class PackViewSimple extends RelativeLayout {
 		// set vars
 		PX_flag_default = UIManager.dpToPx(context, 10);
 		PX_flag_enable = UIManager.dpToPx(context, 100);
-		PX_info_default = UIManager.dpToPx(context, 40);
-		PX_info_enable = UIManager.dpToPx(context, 75);
-		PX_info_extend = UIManager.dpToPx(context, 300);
-
-
-		// set preset
-		LL_leftView.setX(PX_flag_default);
-
 
 		// set listener
-		RL_touchView.setOnClickListener(v1 -> onViewClick());
-		RL_touchView.setOnLongClickListener(v2 -> {
+		LL_touchView.setOnClickListener(v1 -> onViewClick());
+		LL_touchView.setOnLongClickListener(v2 -> {
 			onViewLongClick();
 			return true;
 		});
@@ -106,11 +96,11 @@ public class PackViewSimple extends RelativeLayout {
 
 	public static PackViewSimple errItem(Context context, String title, String subTitle, OnEventListener listener) {
 		return new PackViewSimple(context)
-			.setFlagColor(context.getResources().getColor(R.color.red))
-			.setTitle(title)
-			.setSubTitle(subTitle)
-			//.setOptionVisibility(false)
-			.setOnEventListener(listener);
+				.setFlagColor(context.getResources().getColor(R.color.red))
+				.setTitle(title)
+				.setSubTitle(subTitle)
+				//.setOptionVisibility(false)
+				.setOnEventListener(listener);
 	}
 
 	private void getAttrs(AttributeSet attrs) {
@@ -234,18 +224,13 @@ public class PackViewSimple extends RelativeLayout {
 		if (isPlay != bool) {
 			if (bool) {
 				//animation
-				LL_leftView.animate().x(PX_flag_enable).setDuration(500).start();
+				animatePlay(PX_flag_default, PX_flag_enable);
 
 				//clickEvent
-				RL_playBtn.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						onPlayClick();
-					}
-				});
+				RL_playBtn.setOnClickListener(v -> onPlayClick());
 			} else {
 				//animation
-				LL_leftView.animate().x(PX_flag_default).setDuration(500).start();
+				animatePlay(PX_flag_enable, PX_flag_default);
 
 				//clickEvent
 				RL_playBtn.setOnClickListener(null);
@@ -280,34 +265,50 @@ public class PackViewSimple extends RelativeLayout {
 	public boolean isPlay() {
 		return isPlay;
 	}
-	
+
+	public Animation animatePlay(final int start, final int end) {
+		final int change = end - start;
+		Animation a = new Animation() {
+			@Override
+			protected void applyTransformation(float interpolatedTime, Transformation t) {
+				ViewGroup.LayoutParams params = RL_flagSize.getLayoutParams();
+				params.width = start + (int) (change * interpolatedTime);
+				RL_flagSize.setLayoutParams(params);
+			}
+		};
+		a.setDuration(500);
+		RL_flagSize.startAnimation(a);
+
+		return a;
+	}
+
 	//========================================================================================= Listener
-	
-	
+
+
 	private OnEventListener onEventListener = null;
-	
+
 	public interface OnEventListener {
-		
+
 		void onViewClick(PackViewSimple v);
-		
+
 		void onViewLongClick(PackViewSimple v);
-		
+
 		void onPlayClick(PackViewSimple v);
 	}
-	
+
 	public PackViewSimple setOnEventListener(OnEventListener listener) {
 		this.onEventListener = listener;
 		return this;
 	}
-	
+
 	public void onViewClick() {
 		if (onEventListener != null) onEventListener.onViewClick(this);
 	}
-	
+
 	public void onViewLongClick() {
 		if (onEventListener != null) onEventListener.onViewLongClick(this);
 	}
-	
+
 	public void onPlayClick() {
 		if (onEventListener != null && isPlay()) onEventListener.onPlayClick(this);
 	}
