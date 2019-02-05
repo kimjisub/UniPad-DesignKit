@@ -149,13 +149,13 @@ public class MainActivity extends AppCompatActivity {
 						new FileExplorer(MainActivity.this, finalUrl)
 								.setOnEventListener(new FileExplorer.OnEventListener() {
 									@Override
-									public void onFileSelected(String fileURL) {
-										showToast("onFileSelected: " + fileURL);
+									public void onFileSelected(String filePath) {
+										showToast("onFileSelected: " + filePath);
 									}
 
 									@Override
-									public void onURLChanged(String folderURL) {
-										showToast("onURLChanged: " + folderURL);
+									public void onPathChanged(String folderPath) {
+										showToast("onPathChanged: " + folderPath);
 									}
 								}).show();
 					}

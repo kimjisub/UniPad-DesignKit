@@ -25,12 +25,12 @@ public class FileExplorer {
 	TextView TV_path;
 	ListView LV_list;
 	
-	String URL;
+	String path;
 	
 	
-	public FileExplorer(Context context, String URL) {
+	public FileExplorer(Context context, String path) {
 		this.context = context;
-		this.URL = URL;
+		this.path = path;
 	}
 	
 	public void show() {
@@ -55,7 +55,7 @@ public class FileExplorer {
 					showDialog(file.getName(), lang(R.string.cantReadFile));
 			}
 		});
-		getDir(URL);
+		getDir(path);
 		
 		
 		dialog.setView(LL_explorer);
@@ -63,7 +63,7 @@ public class FileExplorer {
 	}
 	
 	void getDir(String dirPath) {
-		onURLChanged(dirPath);
+		onPathChanged(dirPath);
 		
 		TV_path.setText(dirPath);
 		
@@ -97,9 +97,9 @@ public class FileExplorer {
 	
 	public interface OnEventListener {
 		
-		void onFileSelected(String fileURL);
+		void onFileSelected(String filePath);
 		
-		void onURLChanged(String folderURL);
+		void onPathChanged(String folderPath);
 	}
 	
 	public FileExplorer setOnEventListener(OnEventListener listener) {
@@ -107,12 +107,12 @@ public class FileExplorer {
 		return this;
 	}
 	
-	public void onFileSelected(String fileURL) {
-		if (onEventListener != null) onEventListener.onFileSelected(fileURL);
+	public void onFileSelected(String filePath) {
+		if (onEventListener != null) onEventListener.onFileSelected(filePath);
 	}
 	
-	public void onURLChanged(String folderURL) {
-		if (onEventListener != null) onEventListener.onURLChanged(folderURL);
+	public void onPathChanged(String folderPath) {
+		if (onEventListener != null) onEventListener.onPathChanged(folderPath);
 	}
 	
 	// =========================================================================================
