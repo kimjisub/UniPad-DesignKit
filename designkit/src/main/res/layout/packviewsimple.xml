@@ -122,7 +122,7 @@
 						android:layout_gravity="end"
 						android:ellipsize="end"
 						android:maxLines="1"
-						android:text="test"
+						android:text=""
 						android:textColor="@color/pink"
 						android:textSize="10dp" />
 
@@ -134,7 +134,7 @@
 						android:layout_marginTop="1dp"
 						android:ellipsize="end"
 						android:maxLines="1"
-						android:text="test"
+						android:text=""
 						android:textColor="@color/pink"
 						android:textSize="10dp" />
 
