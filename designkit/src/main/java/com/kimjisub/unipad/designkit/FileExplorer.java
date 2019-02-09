@@ -15,32 +15,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileExplorer {
-	
+
 	Context context;
-	
+
 	List<String> mItem;
 	List<String> mPath;
-	
+
 	LinearLayout LL_explorer;
 	TextView TV_path;
 	ListView LV_list;
-	
+
 	String path;
-	
-	
+	private OnEventListener onEventListener = null;
+
 	public FileExplorer(Context context, String path) {
 		this.context = context;
 		this.path = path;
 	}
-	
+
 	public void show() {
 		LL_explorer = (LinearLayout) View.inflate(context, R.layout.file_explorer, null);
 		TV_path = LL_explorer.findViewById(R.id.path);
 		LV_list = LL_explorer.findViewById(R.id.list);
-		
+
 		final AlertDialog dialog = (new AlertDialog.Builder(context)).create();
-		
-		
+
+
 		LV_list.setOnItemClickListener((parent, view, position, id) -> {
 			final File file = new File(mPath.get(position));
 			if (file.isDirectory()) {
@@ -56,17 +56,19 @@ public class FileExplorer {
 			}
 		});
 		getDir(path);
-		
-		
+
+
 		dialog.setView(LL_explorer);
 		dialog.show();
 	}
-	
+
+	// =========================================================================================
+
 	void getDir(String dirPath) {
 		onPathChanged(dirPath);
-		
+
 		TV_path.setText(dirPath);
-		
+
 		mItem = new ArrayList<>();
 		mPath = new ArrayList<>();
 		File f = new File(dirPath);
@@ -90,42 +92,38 @@ public class FileExplorer {
 		ArrayAdapter<String> fileList = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, mItem);
 		LV_list.setAdapter(fileList);
 	}
-	
-	// =========================================================================================
-	
-	private OnEventListener onEventListener = null;
-	
-	public interface OnEventListener {
-		
-		void onFileSelected(String filePath);
-		
-		void onPathChanged(String folderPath);
-	}
-	
+
 	public FileExplorer setOnEventListener(OnEventListener listener) {
 		this.onEventListener = listener;
 		return this;
 	}
-	
+
 	public void onFileSelected(String filePath) {
 		if (onEventListener != null) onEventListener.onFileSelected(filePath);
 	}
-	
+
 	public void onPathChanged(String folderPath) {
 		if (onEventListener != null) onEventListener.onPathChanged(folderPath);
 	}
-	
-	// =========================================================================================
-	
+
 	void showDialog(String title, String content) {
 		new AlertDialog.Builder(context)
-			.setTitle(title)
-			.setMessage(content)
-			.setPositiveButton(lang(R.string.accept), null)
-			.show();
+				.setTitle(title)
+				.setMessage(content)
+				.setPositiveButton(lang(R.string.accept), null)
+				.show();
 	}
-	
+
+	// =========================================================================================
+
 	public String lang(int id) {
 		return context.getResources().getString(id);
+	}
+
+	public interface OnEventListener {
+
+		void onFileSelected(String filePath);
+
+		void onPathChanged(String folderPath);
 	}
 }

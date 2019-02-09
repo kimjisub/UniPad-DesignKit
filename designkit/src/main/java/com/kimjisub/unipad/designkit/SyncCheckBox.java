@@ -5,50 +5,38 @@ import android.widget.CheckBox;
 import java.util.ArrayList;
 
 public class SyncCheckBox {
-	
+
+	ArrayList<CheckBox> checkBoxes = new ArrayList();
+	OnCheckedChange onCheckedChange;
+
+	// =========================================================================================
+	OnLongClick onLongClick;
 	private boolean isChecked = false;
 	private boolean isLocked = false;
-	
-	// =========================================================================================
-	
-	ArrayList<CheckBox> checkBoxes = new ArrayList();
-	
+
+
+	// ========================================================================================= setChecked
+
+
 	public SyncCheckBox(CheckBox... cbs) {
 		for (CheckBox cb : cbs)
 			addCheckBox(cb);
 	}
-	
+
 	public void addCheckBox(CheckBox checkBox) {
 		checkBox.setOnCheckedChangeListener((compoundButton, b) -> setChecked(b));
 		checkBox.setOnLongClickListener(view -> {
 			longClick();
 			return false;
 		});
-		
+
 		checkBoxes.add(checkBox);
 	}
-	
-	
-	// ========================================================================================= setChecked
-	
-	
-	public void setChecked(boolean b) {
-		if (!isLocked)
-			forceSetChecked(b);
-		else {
-			for (CheckBox checkBox : checkBoxes) {
-				if (checkBox.isChecked() != isChecked) {
-					checkBox.setOnCheckedChangeListener(null);
-					checkBox.setChecked(isChecked);
-					checkBox.setOnCheckedChangeListener((compoundButton, b2) -> setChecked(b2));
-				}
-			}
-		}
-	}
-	
+	// ========================================================================================= checkedChange
+
 	public void forceSetChecked(boolean b) {
 		isChecked = b;
-		
+
 		for (CheckBox checkBox : checkBoxes) {
 			if (checkBox.isChecked() != b) {
 				checkBox.setOnCheckedChangeListener(null);
@@ -56,48 +44,49 @@ public class SyncCheckBox {
 				checkBox.setOnCheckedChangeListener((compoundButton, b2) -> setChecked(b2));
 			}
 		}
-		
+
 		onCheckedChange(b);
 	}
-	// ========================================================================================= checkedChange
-	
-	OnCheckedChange onCheckedChange;
-	
-	public interface OnCheckedChange {
-		void onCheckedChange(boolean b);
-	}
-	
+
 	public void setOnCheckedChange(OnCheckedChange listener) {
 		onCheckedChange = listener;
 	}
-	
+
 	public void onCheckedChange(boolean bool) {
 		if (onCheckedChange != null)
 			onCheckedChange.onCheckedChange(bool);
 	}
-	
-	// ========================================================================================= longClick
-	
-	OnLongClick onLongClick;
-	
-	public interface OnLongClick {
-		void onLongClick();
-	}
-	
+
 	public void setOnLongClick(OnLongClick listener) {
 		onLongClick = listener;
 	}
-	
+
+	// ========================================================================================= longClick
+
 	public void onLongClick() {
 		if (onLongClick != null)
 			onLongClick.onLongClick();
 	}
-	
+
 	public void longClick() {
 		onLongClick();
 	}
-	
-	
+
+	public void setVisibility(int visibility) {
+		for (CheckBox checkBox : checkBoxes)
+			checkBox.setVisibility(visibility);
+	}
+
+	public void toggleChecked() {
+		if (!isLocked)
+			forceToggleChecked();
+	}
+
+	public void forceToggleChecked() {
+		forceSetChecked(!isChecked);
+	}
+
+
 	// ========================================================================================= etc...
 	
 	/*public void setTextColor(int color) {
@@ -111,34 +100,42 @@ public class SyncCheckBox {
 				checkBox.setButtonTintList(colorStateList);
 		}
 	}*/
-	
-	public void setVisibility(int visibility) {
-		for (CheckBox checkBox : checkBoxes)
-			checkBox.setVisibility(visibility);
+
+	public boolean isChecked() {
+		return isChecked;
 	}
-	
-	public void toggleChecked() {
+
+	public void setChecked(boolean b) {
 		if (!isLocked)
-			forceToggleChecked();
+			forceSetChecked(b);
+		else {
+			for (CheckBox checkBox : checkBoxes) {
+				if (checkBox.isChecked() != isChecked) {
+					checkBox.setOnCheckedChangeListener(null);
+					checkBox.setChecked(isChecked);
+					checkBox.setOnCheckedChangeListener((compoundButton, b2) -> setChecked(b2));
+				}
+			}
+		}
 	}
-	
-	public void forceToggleChecked() {
-		forceSetChecked(!isChecked);
+
+	public boolean isLocked() {
+		return isLocked;
 	}
-	
+
 	public void setLocked(boolean b) {
 		isLocked = b;
 		for (CheckBox checkBox : checkBoxes)
 			checkBox.setEnabled(!b);
 	}
-	
+
 	// ========================================================================================= getter
-	
-	public boolean isChecked() {
-		return isChecked;
+
+	public interface OnCheckedChange {
+		void onCheckedChange(boolean b);
 	}
-	
-	public boolean isLocked() {
-		return isLocked;
+
+	public interface OnLongClick {
+		void onLongClick();
 	}
 }

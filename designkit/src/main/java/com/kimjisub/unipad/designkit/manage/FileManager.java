@@ -71,12 +71,12 @@ public class FileManager {
 		File file = new File(path);
 		file.delete();
 	}*/
-	
+
 	public static void deleteFolder(String path) {
-		
+
 		try {
 			File file = new File(path);
-			
+
 			if (file.isDirectory()) {
 				File[] childFileList = file.listFiles();
 				for (File childFile : childFileList)
@@ -84,21 +84,21 @@ public class FileManager {
 				file.delete();
 			} else
 				file.delete();
-			
-			
+
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static long getFolderSize(String a_path) {
 		long totalMemory = 0;
 		File file = new File(a_path);
 		File[] childFileList = file.listFiles();
-		
+
 		if (childFileList == null)
 			return 0;
-		
+
 		for (File childFile : childFileList) {
 			if (childFile.isDirectory())
 				totalMemory += getFolderSize(childFile.getAbsolutePath());
@@ -107,14 +107,14 @@ public class FileManager {
 		}
 		return totalMemory;
 	}
-	
+
 	@SuppressLint("DefaultLocale")
 	public static String byteToMB(float Byte) {
 		return String.format("%.2f", Byte / 1024L / 1024L);
 	}
-	
+
 	public static File[] sortByTime(File[] files) {
-		
+
 		for (int i = 0; i < files.length - 1; i++) {
 			for (int j = 0; j < files.length - (i + 1); j++) {
 				if (files[j].lastModified() < files[j + 1].lastModified()) {
@@ -124,31 +124,31 @@ public class FileManager {
 				}
 			}
 		}
-		
+
 		return files;
 	}
-	
+
 	public static File[] sortByName(File[] files) {
-		
+
 		Arrays.sort(files, new Comparator<Object>() {
 			@Override
 			public int compare(Object object1, Object object2) {
 				return ((File) object1).getName().toLowerCase().compareTo(((File) object2).getName().toLowerCase());
 			}
 		});
-		
+
 		return files;
 	}
-	
-	
+
+
 	public static boolean isSDCardAvalable() {
 		String SDCard = getExternalSDCardPath();
-		
+
 		if ((SDCard == null) || (SDCard.length() == 0))
 			return false;
 		return true;
 	}
-	
+
 	public static String getExternalSDCardPath() {
 		HashSet<String> hs = getExternalMounts();
 		for (String extSDCardPath : hs) {
@@ -156,7 +156,7 @@ public class FileManager {
 		}
 		return null;
 	}
-	
+
 	public static HashSet<String> getExternalMounts() {
 		final HashSet<String> out = new HashSet<String>();
 		String reg = "(?i).*media_rw.*(storage).*(sdcardfs).*rw.*";
@@ -173,7 +173,7 @@ public class FileManager {
 		} catch (final Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		final String[] lines = s.split("\n");
 		for (String line : lines) {
 			if (!line.toLowerCase(Locale.US).contains("asec")) {
@@ -189,17 +189,17 @@ public class FileManager {
 				}
 			}
 		}
-		
+
 		return out;
 	}
-	
+
 	public static int wavDuration(MediaPlayer mplayer, String URL) {
 		try {
 			mplayer.reset();
 			mplayer.setDataSource(URL);
 			mplayer.prepare();
 			Integer duration = mplayer.getDuration();
-			
+
 			return duration;
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -40,6 +40,34 @@ public class PackViewSimple extends RelativeLayout {
 
 	int PX_flag_default;
 	int PX_flag_enable;
+	private boolean isPlay = false;
+	private OnEventListener onEventListener = null;
+
+	public PackViewSimple(Context context) {
+		super(context);
+		initView(context);
+	}
+
+	public PackViewSimple(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		initView(context);
+		getAttrs(attrs);
+	}
+
+	public PackViewSimple(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs);
+		initView(context);
+		getAttrs(attrs, defStyle);
+	}
+
+	public static PackViewSimple errItem(Context context, String title, String subTitle, OnEventListener listener) {
+		return new PackViewSimple(context)
+				.setFlagColor(context.getResources().getColor(R.color.red))
+				.setTitle(title)
+				.setSubTitle(subTitle)
+				//.setOptionVisibility(false)
+				.setOnEventListener(listener);
+	}
 
 	private void initView(Context context) {
 		this.context = context;
@@ -77,36 +105,11 @@ public class PackViewSimple extends RelativeLayout {
 		});
 	}
 
-	public PackViewSimple(Context context) {
-		super(context);
-		initView(context);
-	}
-
-	public PackViewSimple(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		initView(context);
-		getAttrs(attrs);
-	}
-
-	public PackViewSimple(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs);
-		initView(context);
-		getAttrs(attrs, defStyle);
-	}
-
-	public static PackViewSimple errItem(Context context, String title, String subTitle, OnEventListener listener) {
-		return new PackViewSimple(context)
-				.setFlagColor(context.getResources().getColor(R.color.red))
-				.setTitle(title)
-				.setSubTitle(subTitle)
-				//.setOptionVisibility(false)
-				.setOnEventListener(listener);
-	}
-
 	private void getAttrs(AttributeSet attrs) {
 		TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.PackView);
 		setTypeArray(typedArray);
 	}
+	//========================================================================================= set / update / etc..
 
 	private void getAttrs(AttributeSet attrs, int defStyle) {
 		TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.PackView, defStyle, 0);
@@ -144,7 +147,6 @@ public class PackViewSimple extends RelativeLayout {
 
 		typedArray.recycle();
 	}
-	//========================================================================================= set / update / etc..
 
 	public PackViewSimple setFlagColor(int color) {
 		GradientDrawable flagBackground = (GradientDrawable) getResources().getDrawable(R.drawable.border_all_round);
@@ -203,6 +205,9 @@ public class PackViewSimple extends RelativeLayout {
 		return this;
 	}
 
+
+	//========================================================================================= Play
+
 	public PackViewSimple setPlayImageShow(boolean bool) {
 		IV_playImg.setVisibility(bool ? VISIBLE : GONE);
 
@@ -214,11 +219,6 @@ public class PackViewSimple extends RelativeLayout {
 
 		return this;
 	}
-
-
-	//========================================================================================= Play
-
-	private boolean isPlay = false;
 
 	public void togglePlay(boolean bool) {
 		if (isPlay != bool) {
@@ -266,6 +266,8 @@ public class PackViewSimple extends RelativeLayout {
 		return isPlay;
 	}
 
+	//========================================================================================= Listener
+
 	public Animation animatePlay(final int start, final int end) {
 		final int change = end - start;
 		Animation a = new Animation() {
@@ -280,20 +282,6 @@ public class PackViewSimple extends RelativeLayout {
 		RL_flagSize.startAnimation(a);
 
 		return a;
-	}
-
-	//========================================================================================= Listener
-
-
-	private OnEventListener onEventListener = null;
-
-	public interface OnEventListener {
-
-		void onViewClick(PackViewSimple v);
-
-		void onViewLongClick(PackViewSimple v);
-
-		void onPlayClick(PackViewSimple v);
 	}
 
 	public PackViewSimple setOnEventListener(OnEventListener listener) {
@@ -311,5 +299,14 @@ public class PackViewSimple extends RelativeLayout {
 
 	public void onPlayClick() {
 		if (onEventListener != null && isPlay()) onEventListener.onPlayClick(this);
+	}
+
+	public interface OnEventListener {
+
+		void onViewClick(PackViewSimple v);
+
+		void onViewLongClick(PackViewSimple v);
+
+		void onPlayClick(PackViewSimple v);
 	}
 }
