@@ -296,23 +296,21 @@ public class PackViewSimple extends RelativeLayout {
 	}
 
 	public PackViewSimple setToggle(boolean bool) {
-		if (isToggle != bool) {
-			if (bool) {
-				//animation
-				skipAnimateToggle(PX_flag_default, PX_flag_enable);
+		if (bool) {
+			//animation
+			skipAnimateToggle(PX_flag_default, PX_flag_enable);
 
-				//clickEvent
-				RL_playBtn.setOnClickListener(v -> onPlayClick());
-			} else {
-				//animation
-				skipAnimateToggle(PX_flag_enable, PX_flag_default);
+			//clickEvent
+			RL_playBtn.setOnClickListener(v -> onPlayClick());
+		} else {
+			//animation
+			skipAnimateToggle(PX_flag_enable, PX_flag_default);
 
-				//clickEvent
-				RL_playBtn.setOnClickListener(null);
-				RL_playBtn.setClickable(false);
-			}
-			isToggle = bool;
+			//clickEvent
+			RL_playBtn.setOnClickListener(null);
+			RL_playBtn.setClickable(false);
 		}
+		isToggle = bool;
 
 		return this;
 	}
