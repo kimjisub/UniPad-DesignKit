@@ -350,10 +350,14 @@ public class PackViewSimple extends RelativeLayout {
 	//==============================================================================================
 
 	public PackViewSimple cancelAllAnimation() {
-		if (flagAnimator != null)
+		if (flagAnimator != null) {
 			flagAnimator.cancel();
-		if (toggleAnimator != null)
+			setFlagColor(RL_flag_color);
+		}
+		if (toggleAnimator != null) {
 			toggleAnimator.cancel();
+			setToggle(isToggle);
+		}
 
 		return this;
 	}
