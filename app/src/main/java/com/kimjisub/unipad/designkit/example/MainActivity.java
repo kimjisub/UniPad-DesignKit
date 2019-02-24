@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 				.setOnEventListener(new PackViewSimple.OnEventListener() {
 					@Override
 					public void onViewClick(PackViewSimple v) {
-						v.togglePlay();
+						v.toggle();
 						showToast("onViewClick on first exmaple");
 					}
 
