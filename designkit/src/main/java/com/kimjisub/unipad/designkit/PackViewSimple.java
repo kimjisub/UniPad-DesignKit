@@ -222,8 +222,10 @@ public class PackViewSimple extends RelativeLayout {
 
 	//============================================================================================== Toggle
 
-	public PackViewSimple animateToggle(final int start, final int end) {
-		final int change = end - start;
+	public PackViewSimple animateToggle(final int target) {
+		int start = RL_flagSize.getLayoutParams().width;
+
+		final int change = target - start;
 		toggleAnimator = new Animation() {
 			@Override
 			protected void applyTransformation(float interpolatedTime, Transformation t) {
@@ -238,10 +240,9 @@ public class PackViewSimple extends RelativeLayout {
 		return this;
 	}
 
-	public PackViewSimple skipAnimateToggle(final int start, final int end) {
-		final int change = end - start;
+	public PackViewSimple skipAnimateToggle(final int target) {
 		ViewGroup.LayoutParams params = RL_flagSize.getLayoutParams();
-		params.width = start + change;
+		params.width = target;
 		RL_flagSize.setLayoutParams(params);
 
 		return this;
@@ -251,13 +252,13 @@ public class PackViewSimple extends RelativeLayout {
 		if (isToggle != bool) {
 			if (bool) {
 				//animation
-				animateToggle(PX_flag_default, PX_flag_enable);
+				animateToggle(PX_flag_enable);
 
 				//clickEvent
 				RL_playBtn.setOnClickListener(v -> onPlayClick());
 			} else {
 				//animation
-				animateToggle(PX_flag_enable, PX_flag_default);
+				animateToggle(PX_flag_default);
 
 				//clickEvent
 				RL_playBtn.setOnClickListener(null);
@@ -298,13 +299,13 @@ public class PackViewSimple extends RelativeLayout {
 	public PackViewSimple setToggle(boolean bool) {
 		if (bool) {
 			//animation
-			skipAnimateToggle(PX_flag_default, PX_flag_enable);
+			skipAnimateToggle(PX_flag_enable);
 
 			//clickEvent
 			RL_playBtn.setOnClickListener(v -> onPlayClick());
 		} else {
 			//animation
-			skipAnimateToggle(PX_flag_enable, PX_flag_default);
+			skipAnimateToggle(PX_flag_default);
 
 			//clickEvent
 			RL_playBtn.setOnClickListener(null);
