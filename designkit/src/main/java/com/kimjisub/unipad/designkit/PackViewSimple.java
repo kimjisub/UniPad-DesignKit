@@ -23,7 +23,6 @@ public class PackViewSimple extends RelativeLayout {
 
 	Context context;
 
-	RelativeLayout RL_root;
 	LinearLayout LL_touchView;
 	LinearLayout LL_leftView;
 	RelativeLayout RL_playBtn;
@@ -79,7 +78,6 @@ public class PackViewSimple extends RelativeLayout {
 
 
 		// set view
-		RL_root = findViewById(R.id.root);
 		LL_touchView = findViewById(R.id.touchView);
 		LL_leftView = findViewById(R.id.leftView);
 		RL_playBtn = findViewById(R.id.playBtn);
