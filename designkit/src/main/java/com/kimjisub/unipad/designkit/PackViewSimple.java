@@ -42,6 +42,9 @@ public class PackViewSimple extends RelativeLayout {
 	private boolean isToggle = false;
 	private OnEventListener onEventListener = null;
 
+	ValueAnimator flagAnimator;
+	Animation toggleAnimator;
+
 	public PackViewSimple(Context context) {
 		super(context);
 		initView(context);
@@ -107,7 +110,7 @@ public class PackViewSimple extends RelativeLayout {
 		TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.PackView);
 		setTypeArray(typedArray);
 	}
-	//========================================================================================= set / update / etc..
+	//============================================================================================== set / update / etc..
 
 	private void getAttrs(AttributeSet attrs, int defStyle) {
 		TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.PackView, defStyle, 0);
@@ -146,33 +149,6 @@ public class PackViewSimple extends RelativeLayout {
 		typedArray.recycle();
 	}
 
-	public PackViewSimple setFlagColor(int color) {
-		GradientDrawable flagBackground = (GradientDrawable) getResources().getDrawable(R.drawable.border_all_round);
-		flagBackground.setColor(color);
-		RL_flag.setBackground(flagBackground);
-		RL_flag_color = color;
-
-		return this;
-	}
-
-	public PackViewSimple updateFlagColor(int colorNext) {
-
-		int colorPrev = RL_flag_color;
-		ValueAnimator animator = ObjectAnimator.ofObject(new ArgbEvaluator(), colorPrev, colorNext);
-		animator.setDuration(500);
-		animator.addUpdateListener(valueAnimator -> {
-			int color3 = (int) valueAnimator.getAnimatedValue();
-
-			GradientDrawable flagBackground = (GradientDrawable) getResources().getDrawable(R.drawable.border_all_round);
-			flagBackground.setColor(color3);
-			RL_flag.setBackground(flagBackground);
-		});
-		animator.start();
-		RL_flag_color = colorNext;
-
-		return this;
-	}
-
 	public PackViewSimple setTitle(String str) {
 		TV_title.setText(str);
 		return this;
@@ -203,9 +179,6 @@ public class PackViewSimple extends RelativeLayout {
 		return this;
 	}
 
-
-	//========================================================================================= Play
-
 	public PackViewSimple setPlayImageShow(boolean bool) {
 		IV_playImg.setVisibility(bool ? VISIBLE : GONE);
 
@@ -218,99 +191,40 @@ public class PackViewSimple extends RelativeLayout {
 		return this;
 	}
 
-	public void toggle(boolean bool) {
-		if (isToggle != bool) {
-			if (bool) {
-				//animation
-				animatePlay(PX_flag_default, PX_flag_enable);
+	//============================================================================================== Flag
 
-				//clickEvent
-				RL_playBtn.setOnClickListener(v -> onPlayClick());
-			} else {
-				//animation
-				animatePlay(PX_flag_enable, PX_flag_default);
+	public PackViewSimple animateFlagColor(int colorNext) {
 
-				//clickEvent
-				RL_playBtn.setOnClickListener(null);
-				RL_playBtn.setClickable(false);
-			}
-			isToggle = bool;
-		}
+		int colorPrev = RL_flag_color;
+		flagAnimator = ObjectAnimator.ofObject(new ArgbEvaluator(), colorPrev, colorNext);
+		flagAnimator.setDuration(500);
+		flagAnimator.addUpdateListener(valueAnimator -> {
+			int color = (int) valueAnimator.getAnimatedValue();
+
+			GradientDrawable flagBackground = (GradientDrawable) getResources().getDrawable(R.drawable.border_all_round);
+			flagBackground.setColor(color);
+			RL_flag.setBackground(flagBackground);
+		});
+		flagAnimator.start();
+		RL_flag_color = colorNext;
+
+		return this;
 	}
 
-	public void toggle() {
-		toggle(!isToggle);
+	public PackViewSimple setFlagColor(int color) {
+		GradientDrawable flagBackground = (GradientDrawable) getResources().getDrawable(R.drawable.border_all_round);
+		flagBackground.setColor(color);
+		RL_flag.setBackground(flagBackground);
+		RL_flag_color = color;
+
+		return this;
 	}
 
-	public void toggle(boolean bool, int onColor, int offColor) {
-		toggle(bool);
-		if (isToggle)
-			updateFlagColor(onColor);
-		else
-			updateFlagColor(offColor);
+	//============================================================================================== Toggle
 
-	}
-
-	public void toggle(int onColor, int offColor) {
-		toggle(!isToggle);
-		if (isToggle)
-			updateFlagColor(onColor);
-		else
-			updateFlagColor(offColor);
-
-	}
-
-	public void setToggle(boolean bool) {
-		if (isToggle != bool) {
-			if (bool) {
-				//animation
-				skipAnimate(PX_flag_default, PX_flag_enable);
-
-				//clickEvent
-				RL_playBtn.setOnClickListener(v -> onPlayClick());
-			} else {
-				//animation
-				skipAnimate(PX_flag_enable, PX_flag_default);
-
-				//clickEvent
-				RL_playBtn.setOnClickListener(null);
-				RL_playBtn.setClickable(false);
-			}
-			isToggle = bool;
-		}
-	}
-
-	public void setToggle() {
-		setToggle(!isToggle);
-	}
-
-	public void setToggle(boolean bool, int onColor, int offColor) {
-		setToggle(bool);
-		if (isToggle)
-			setFlagColor(onColor);
-		else
-			setFlagColor(offColor);
-
-	}
-
-	public void setToggle(int onColor, int offColor) {
-		setToggle(!isToggle);
-		if (isToggle)
-			setFlagColor(onColor);
-		else
-			setFlagColor(offColor);
-
-	}
-
-	public boolean isToggle() {
-		return isToggle;
-	}
-
-	//========================================================================================= Listener
-
-	public Animation animatePlay(final int start, final int end) {
+	public PackViewSimple animateToggle(final int start, final int end) {
 		final int change = end - start;
-		Animation a = new Animation() {
+		toggleAnimator = new Animation() {
 			@Override
 			protected void applyTransformation(float interpolatedTime, Transformation t) {
 				ViewGroup.LayoutParams params = RL_flagSize.getLayoutParams();
@@ -318,18 +232,133 @@ public class PackViewSimple extends RelativeLayout {
 				RL_flagSize.setLayoutParams(params);
 			}
 		};
-		a.setDuration(500);
-		RL_flagSize.startAnimation(a);
+		toggleAnimator.setDuration(500);
+		RL_flagSize.startAnimation(toggleAnimator);
 
-		return a;
+		return this;
 	}
 
-	public void skipAnimate(final int start, final int end) {
+	public PackViewSimple skipAnimateToggle(final int start, final int end) {
 		final int change = end - start;
 		ViewGroup.LayoutParams params = RL_flagSize.getLayoutParams();
 		params.width = start + change;
 		RL_flagSize.setLayoutParams(params);
+
+		return this;
 	}
+
+	public PackViewSimple toggle(boolean bool) {
+		if (isToggle != bool) {
+			if (bool) {
+				//animation
+				animateToggle(PX_flag_default, PX_flag_enable);
+
+				//clickEvent
+				RL_playBtn.setOnClickListener(v -> onPlayClick());
+			} else {
+				//animation
+				animateToggle(PX_flag_enable, PX_flag_default);
+
+				//clickEvent
+				RL_playBtn.setOnClickListener(null);
+				RL_playBtn.setClickable(false);
+			}
+			isToggle = bool;
+		}
+
+		return this;
+	}
+
+	public PackViewSimple toggle() {
+		toggle(!isToggle);
+
+		return this;
+	}
+
+	public PackViewSimple toggle(boolean bool, int onColor, int offColor) {
+		toggle(bool);
+		if (isToggle)
+			animateFlagColor(onColor);
+		else
+			animateFlagColor(offColor);
+
+		return this;
+	}
+
+	public PackViewSimple toggle(int onColor, int offColor) {
+		toggle(!isToggle);
+		if (isToggle)
+			animateFlagColor(onColor);
+		else
+			animateFlagColor(offColor);
+
+		return this;
+	}
+
+	public PackViewSimple setToggle(boolean bool) {
+		if (isToggle != bool) {
+			if (bool) {
+				//animation
+				skipAnimateToggle(PX_flag_default, PX_flag_enable);
+
+				//clickEvent
+				RL_playBtn.setOnClickListener(v -> onPlayClick());
+			} else {
+				//animation
+				skipAnimateToggle(PX_flag_enable, PX_flag_default);
+
+				//clickEvent
+				RL_playBtn.setOnClickListener(null);
+				RL_playBtn.setClickable(false);
+			}
+			isToggle = bool;
+		}
+
+		return this;
+	}
+
+	public PackViewSimple setToggle() {
+		setToggle(!isToggle);
+
+		return this;
+	}
+
+	public PackViewSimple setToggle(boolean bool, int onColor, int offColor) {
+		setToggle(bool);
+		if (isToggle)
+			setFlagColor(onColor);
+		else
+			setFlagColor(offColor);
+
+		return this;
+	}
+
+	public PackViewSimple setToggle(int onColor, int offColor) {
+		setToggle(!isToggle);
+		if (isToggle)
+			setFlagColor(onColor);
+		else
+			setFlagColor(offColor);
+
+		return this;
+	}
+
+	public boolean isToggle() {
+		return isToggle;
+	}
+
+	//==============================================================================================
+
+	public PackViewSimple cancelAllAnimation(){
+		flagAnimator.cancel();
+		toggleAnimator.cancel();
+
+		return this;
+	}
+
+	//============================================================================================== Listener
+
+
 
 	public PackViewSimple setOnEventListener(OnEventListener listener) {
 		this.onEventListener = listener;

@@ -51,6 +51,20 @@
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
 			    android:text="Lock"/>
+
+
+
+			<Button
+				android:id="@+id/BTN_toggleon"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Toggle On"/>
+
+			<Button
+				android:id="@+id/BTN_toggleoff"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Toggle Off"/>
 		
 		</LinearLayout>
 	

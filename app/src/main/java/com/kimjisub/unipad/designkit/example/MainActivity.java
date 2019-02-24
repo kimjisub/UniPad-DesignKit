@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
 	CheckBox CB_syncCheckBox3;
 	Button BTN_syncToggleButton1;
 	CheckBox CB_lock;
+	Button BTN_toggleon;
+	Button BTN_toggleoff;
 
 	void initVar() {
 		LL_list = findViewById(R.id.LL_list);
@@ -39,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
 		CB_syncCheckBox3 = findViewById(R.id.CB_syncCheckBox3);
 		BTN_syncToggleButton1 = findViewById(R.id.BTN_syncToggleButton1);
 		CB_lock = findViewById(R.id.CB_lock);
+		BTN_toggleon = findViewById(R.id.BTN_toggleon);
+		BTN_toggleoff = findViewById(R.id.BTN_toggleoff);
 	}
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -131,6 +136,13 @@ public class MainActivity extends AppCompatActivity {
 		int bottom = dpToPx(10f);
 		lp.setMargins(left, top, right, bottom);
 		LL_list.addView(packViewSimple, lp);
+
+		BTN_toggleon.setOnClickListener(v -> {
+			packViewSimple.toggle(true, 0xff00ff00, 0xffff0000);
+		});
+		BTN_toggleoff.setOnClickListener(v -> {
+			packViewSimple.toggle(false, 0xff00ff00, 0xffff0000);
+		});
 
 	}
 
